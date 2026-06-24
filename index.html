@@ -101,7 +101,7 @@
     <div class="logo">F</div>
     <div class="side-btn" onclick="launchApp('https://google.com')" title="Google">🔍</div>
     <div class="side-btn" onclick="launchApp('https://youtube.com')" title="YouTube">▶</div>
-    <div class="side-btn" onclick="launchApp('https://amp.xhamster.com')" title="GAMES">🎮</div>
+    <div class="side-btn" onclick="launchApp('https://crazygames.com.com')" title="GAMES">🎮</div>
     <div class="side-btn" onclick="launchApp('https://vidbox.cc')" title="VidBox">🎬</div>
     <div class="side-btn" onclick="launchApp('https://discord.com')" title="Discord">💬</div>
   </nav>
@@ -255,9 +255,9 @@
       routes = {
         music: q => `https://open.spotify.com/search/$${encodeURIComponent(q)}`,
         video: q => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,
-        movie: q => `https://himovies.sx/search/${encodeURIComponent(q)}`,
+        movie: q => `https://vidbox.cc/search/${encodeURIComponent(q)}`,
         social: q => `https://www.instagram.com/explore/tags/${encodeURIComponent(q)}`,
-        adult: q => `https://xhamster.com/search/${encodeURIComponent(q)}`
+        adult: q => `https://amp.xhamster.com/search/${encodeURIComponent(q)}`
       };
 
       standardEngines = {
