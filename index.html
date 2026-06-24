@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f2027">
-  <title>FRONTIER OS</title>
+  <title>FRONTIER BROWSER</title>
   
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
     
     @keyframes bg { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     
-    /* SIDEBAR */
+    /* SIDEBAR (DESKTOP) */
     .sidebar { width: 95px; height: 100vh; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 18px; padding-top: 20px; z-index: 10; overflow-y: auto; }
     .sidebar::-webkit-scrollbar { display: none; }
     .logo { width: 62px; min-height: 62px; border-radius: 22px; background: linear-gradient(135deg, #7f5af0, #2cb67d); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; margin-bottom: 8px; box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); flex-shrink: 0; }
@@ -93,6 +93,33 @@
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25); border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+
+    /* ========================================================
+       MOBILE RESPONSIVENESS (PHONES & TABLETS)
+       ======================================================== */
+    @media (max-width: 768px) {
+      body { flex-direction: column-reverse; }
+      .sidebar { width: 100%; height: 80px; flex-direction: row; border-right: none; border-top: 1px solid var(--border); padding: 0 15px; align-items: center; justify-content: space-evenly; overflow-x: auto; overflow-y: hidden; }
+      .logo { display: none; }
+      .side-btn { width: 50px; min-height: 50px; font-size: 22px; }
+      .topbar { height: 70px; padding: 0 20px; }
+      .title { font-size: 22px; }
+      .subtitle { font-size: 11px; }
+      #clock { font-size: 24px; }
+      #date { font-size: 12px; }
+      #installBtn { padding: 8px 14px; font-size: 13px; }
+      #view-home { padding: 20px; }
+      .search-box { flex-direction: column; border-radius: 20px; padding: 16px; }
+      .search-box input { padding-left: 4px; margin-bottom: 10px; }
+      .search-box select, .search-box button { width: 100%; border-radius: 12px; }
+      .apps-title { font-size: 22px; margin-top: 25px; margin-bottom: 15px; }
+      .apps { grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 15px; }
+      .app { height: 110px; border-radius: 20px; }
+      .app-icon { font-size: 30px; }
+      .app-name { font-size: 12px; }
+      .history-top { flex-direction: column; align-items: flex-start; gap: 15px; }
+      .clear-btn { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -110,7 +137,7 @@
     
     <header class="topbar">
       <div>
-        <div class="title">FRONTIER OS</div>
+        <div class="title">FRONTIER BROWSER</div>
         <div class="subtitle">Universal Web Environment</div>
       </div>
       <div class="top-right">
@@ -194,15 +221,21 @@
     window.addEventListener('online', () => document.getElementById('onlineStatus').innerText = 'ONLINE');
     window.addEventListener('offline', () => document.getElementById('onlineStatus').innerText = 'OFFLINE');
 
-    // ----- SIMULATED NATIVE WINDOW LAUNCHER -----
+    // ----- RESPONSIVE NATIVE WINDOW LAUNCHER -----
     function launchApp(url) {
-      const w = 1200;
-      const h = 750;
-      const left = (screen.width / 2) - (w / 2);
-      const top = (screen.height / 2) - (h / 2);
+      if (window.innerWidth <= 768) {
+        // Mobile fallback
+        window.open(url, '_blank');
+      } else {
+        // Desktop window popup
+        const w = 1200;
+        const h = 750;
+        const left = (screen.width / 2) - (w / 2);
+        const top = (screen.height / 2) - (h / 2);
 
-      const windowFeatures = `popup=yes,width=${w},height=${h},top=${top},left=${left},resizable=yes,scrollbars=yes,status=no`;
-      window.open(url, '_blank', windowFeatures);
+        const windowFeatures = `popup=yes,width=${w},height=${h},top=${top},left=${left},resizable=yes,scrollbars=yes,status=no`;
+        window.open(url, '_blank', windowFeatures);
+      }
     }
 
     // ----- ADVANCED CLASS-BASED HISTORY MANAGER -----
@@ -211,7 +244,11 @@
       key = "frontierDesktopHistory";
 
       get() { 
-        return JSON.parse(localStorage.getItem(this.key) || "[]"); 
+        try {
+          return JSON.parse(localStorage.getItem(this.key) || "[]"); 
+        } catch (e) {
+          return [];
+        }
       }
 
       save(query) {
